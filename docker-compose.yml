@@ -1,0 +1,45 @@
+services:
+  mysqldb:
+    image: mysql
+    container_name: mysqldb
+    restart: always
+    volumes:
+      - ./db:/var/lib/mysql
+      - ./my.cnf:/etc/mysql/my.cnf # DOUBLE CHECK THE CONF! Mount custom MySQL configuration file
+      - ./db_init.sql:/docker-entrypoint-initdb.d/db_init.sql # Mount SQL initialization scripts
+
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: bookManagementSystem
+      MYSQL_USER: springuser
+      MYSQL_PASSWORD: password1234
+      MYSQL_HOST: mysqldb
+
+    ports:
+      - "3309:3306"
+    networks:
+      springboot-mysql-net:
+
+  spring-app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: spring-container
+    ports:
+      - "8080:8080"
+    depends_on:
+      - mysqldb
+    environment:
+      MYSQL_URL: jdbc:mysql://mysqldb:3309/book_management_system?autoReconnect=true&useSSL=false
+      MYSQL_USERNAME: root
+      MYSQL_PASSWORD: root
+    deploy:
+      restart_policy:
+        condition: on-failure
+        max_attempts: 10
+    networks:
+      - springboot-mysql-net
+
+networks:
+  springboot-mysql-net:
+    driver: bridge
