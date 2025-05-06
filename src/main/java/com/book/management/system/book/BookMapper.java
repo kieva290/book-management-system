@@ -2,6 +2,8 @@ package com.book.management.system.book;
 
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+
 @Service
 public class BookMapper {
 
@@ -11,6 +13,7 @@ public class BookMapper {
                 .title(request.title())
                 .author(request.author())
                 .isbn(request.isbn())
+                .createdDate(LocalDateTime.now())
                 .build();
     }
 
