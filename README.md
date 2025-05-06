@@ -115,3 +115,6 @@ This application comes with unit tests, for the Services classes
 ### Notes
 
 -  Replace `book-id` with the actual ID of the Book when making requests to update or delete a specific book
+-  To test the endpoint via POSTMAN, l've supplied the export file for POST in the source code, file "book-management-system.postman_collection.json", just import it on your local machine POSTMAN,
+-  You will notice the endpoint like this "{{api_url}}{{api_port}}/api/v1/books", just ensure that these variables "api_url : http://localhost:", and "api_port: 8080" are setup on POSTMAN
+-  before making requests, or you can reach out to me for assistance 
