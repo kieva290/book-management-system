@@ -13,7 +13,6 @@ services:
       MYSQL_DATABASE: bookManagementSystem
       MYSQL_USER: springuser
       MYSQL_PASSWORD: password1234
-      MYSQL_HOST: mysqldb
 
     ports:
       - "3309:3306"
@@ -30,9 +29,10 @@ services:
     depends_on:
       - mysqldb
     environment:
-      MYSQL_URL: jdbc:mysql://mysqldb:3309/book_management_system?autoReconnect=true&useSSL=false
+      MYSQL_HOST: mysqldb
       MYSQL_USERNAME: root
       MYSQL_PASSWORD: root
+      MYSQL_PORT: 3306
     deploy:
       restart_policy:
         condition: on-failure
