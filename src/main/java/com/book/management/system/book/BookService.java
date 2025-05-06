@@ -26,11 +26,6 @@ public class BookService {
     private final BookMapper bookMapper;
 
     public Integer save(@Valid BookRequest request) {
-
-//        if(!validateISBN(request.isbn())) {
-//            throw new ISBNException(" Supplied ISBN-13 is not valid " + request.isbn());
-//        }
-
         Book book = bookMapper.toBook(request);
         return bookRepository.save(book).getId();
     }
@@ -77,7 +72,6 @@ public class BookService {
 
     private boolean validateISBN(String isbn) {
 
-        System.out.println("<<< Auto-generated ISBN >>>" + isbn);
         int checksum = 0; // holds the checksum value
 
        // calculate the checksum, for the first 12-digits of the ISBN-13 as string

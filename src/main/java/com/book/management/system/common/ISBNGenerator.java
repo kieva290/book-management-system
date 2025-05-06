@@ -23,13 +23,17 @@ public class ISBNGenerator {
     }
 
     private int calculateCheckDigit(String isbn12) {
-        int sum = 0;
-        for (int i = 0; i < 12; i++) {
-            int digit = Integer.parseInt(String.valueOf(isbn12.charAt(i)));
-            sum += (i % 2 == 0 ) ? digit : digit * 3;
+
+        int checksum = 0; // holds the checksum value
+
+        for (int i = 0; i < isbn12.length() ; i++) {
+            checksum += i % 2 == 0 ? 3 * Integer.parseInt(isbn12.charAt(i) + "") : Integer.parseInt(isbn12.charAt(i) + "");
         }
-        int checkDigit = 10 - (sum % 10);
-        return (checkDigit == 10) ? 0 : checkDigit;
+
+        checksum = 10 - checksum % 10;
+
+        return checksum;
+
     }
 
 }
