@@ -1,5 +1,6 @@
 package com.book.management.system.book;
 
+import com.book.management.system.common.ISBNGenerator;
 import com.book.management.system.common.PageResponse;
 import com.book.management.system.exception.ISBNException;
 import jakarta.persistence.EntityNotFoundException;
@@ -24,9 +25,11 @@ public class BookService {
 
     private final BookRepository bookRepository;
     private final BookMapper bookMapper;
+    private final ISBNGenerator isbnGenerator;
 
     public Integer save(@Valid BookRequest request) {
         Book book = bookMapper.toBook(request);
+        book.setIsbn(isbnGenerator.generateISBN13());
         return bookRepository.save(book).getId();
     }
 
@@ -66,25 +69,9 @@ public class BookService {
     }
 
     public ResponseEntity<Void> deleteBook(Integer bookId) {
-        bookRepository.deleteById(bookId);
+        Book book = bookRepository.findById(bookId).orElseThrow(() -> new EntityNotFoundException("Book not found, could not be delete"));
+        bookRepository.delete(book);
         return ResponseEntity.noContent().build();
-    }
-
-    private boolean validateISBN(String isbn) {
-
-        int checksum = 0; // holds the checksum value
-
-       // calculate the checksum, for the first 12-digits of the ISBN-13 as string
-        for (int i = 0; i < isbn.length() - 1 ; i++) {
-            checksum += i % 2 == 0 ? 3 * Integer.parseInt(isbn.charAt(i) + "") : Integer.parseInt(isbn.charAt(i) + "");
-        }
-
-        checksum = 10 - checksum % 10;
-
-        Integer checker = Integer.parseInt(isbn.charAt(isbn.length() - 1 ) + "");
-
-        return checker.equals(checksum);
-
     }
 
 }

@@ -10,14 +10,11 @@ import java.time.LocalDateTime;
 @RequiredArgsConstructor
 public class BookMapper {
 
-    private final ISBNGenerator isbnGenerator;
-
     public Book toBook(BookRequest request) {
         return Book.builder()
                 .id(request.id())
                 .title(request.title())
                 .author(request.author())
-                .isbn(isbnGenerator.generateISBN13())
                 .createdDate(LocalDateTime.now())
                 .build();
     }
