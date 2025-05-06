@@ -1,18 +1,23 @@
 package com.book.management.system.book;
 
+import com.book.management.system.common.ISBNGenerator;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 
 @Service
+@RequiredArgsConstructor
 public class BookMapper {
+
+    private final ISBNGenerator isbnGenerator;
 
     public Book toBook(BookRequest request) {
         return Book.builder()
                 .id(request.id())
                 .title(request.title())
                 .author(request.author())
-                .isbn(request.isbn())
+                .isbn(isbnGenerator.generateISBN13())
                 .createdDate(LocalDateTime.now())
                 .build();
     }

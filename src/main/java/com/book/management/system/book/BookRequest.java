@@ -11,11 +11,11 @@ public record BookRequest(
         @NotNull(message = "Author Cannot be Null")
         @NotEmpty(message = "Author Cannot be Empty")
         @Size(min = 1, max = 50, message = "Author Cannot be Exceed 50 characters")
-        String author,
-        @NotNull(message = "ISBN cannot be Null")
-        @NotEmpty(message = "ISBN cannot be Empty")
-        @Size(min = 13, max = 13, message = "ISBN Must be 13 characters long")
-        String isbn
+        String author
+//        @NotNull(message = "ISBN cannot be Null")
+//        @NotEmpty(message = "ISBN cannot be Empty")
+//        @Size(min = 13, max = 13, message = "ISBN Must be 13 characters long")
+//        String isbn
 
 ) {
 }
