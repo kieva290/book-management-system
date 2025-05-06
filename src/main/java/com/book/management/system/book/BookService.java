@@ -1,6 +1,7 @@
 package com.book.management.system.book;
 
 import com.book.management.system.common.PageResponse;
+import com.book.management.system.exception.ISBNException;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -25,6 +26,11 @@ public class BookService {
     private final BookMapper bookMapper;
 
     public Integer save(@Valid BookRequest request) {
+
+        if(!validateISBN(request.isbn())) {
+            throw new ISBNException(" Supplied ISBN-13 is not valid " + request.isbn());
+        }
+
         Book book = bookMapper.toBook(request);
         return bookRepository.save(book).getId();
     }
@@ -67,6 +73,22 @@ public class BookService {
     public ResponseEntity<Void> deleteBook(Integer bookId) {
         bookRepository.deleteById(bookId);
         return ResponseEntity.noContent().build();
+    }
+
+    private boolean validateISBN(String isbn) {
+        int checksum = 0; // holds the checksum value
+
+       // calculate the checksum, for the first 12-digits of the ISBN-13 as string
+        for (int i = 0; i < isbn.length() - 1 ; i++) {
+            checksum += i % 2 == 0 ? 3 * Integer.parseInt(isbn.charAt(i) + "") : Integer.parseInt(isbn.charAt(i) + "");
+        }
+
+        checksum = 10 - checksum % 10;
+
+        Integer checker = Integer.parseInt(isbn.charAt(isbn.length() - 1 ) + "");
+
+        return checker.equals(checksum);
+
     }
 
 }

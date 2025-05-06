@@ -1,21 +1,43 @@
 package com.book.management.system.handler;
 
+import com.book.management.system.exception.ISBNException;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import java.util.HashSet;
+import java.util.Set;
+
+import static org.springframework.http.HttpStatus.BAD_REQUEST;
 import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
-    @ExceptionHandler(Exception.class)
-    public ResponseEntity<ExceptionResponse> handleException(Exception exp) {
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<ExceptionResponse> handleException(MethodArgumentNotValidException exp) {
+        Set<String> errors = new HashSet<>();
+        exp.getBindingResult().getAllErrors().forEach(error -> {
+            var errorMessage = error.getDefaultMessage();
+            errors.add(errorMessage);
+        });
+
         return ResponseEntity
-                .status(INTERNAL_SERVER_ERROR)
+                .status(BAD_REQUEST)
                 .body(
                         ExceptionResponse.builder()
-                                .businessErrorDescription("Internal Error, please contact the admin")
+                                .validationErrors(errors)
+                                .build()
+                );
+    }
+
+    @ExceptionHandler(ISBNException.class)
+    public ResponseEntity<ExceptionResponse> handleException(ISBNException exp) {
+        return ResponseEntity
+                .status(BAD_REQUEST)
+                .body(
+                        ExceptionResponse.builder()
                                 .error(exp.getMessage())
                                 .build()
                 );
