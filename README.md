@@ -133,3 +133,6 @@ This application comes with unit tests, for the Services classes
 -  To test the endpoint via POSTMAN, l've supplied the export file for POST in the source code, file "book-management-system.postman_collection.json", just import it on your local machine POSTMAN,
 -  You will notice the endpoint like this "{{api_url}}{{api_port}}/api/v1/books", just ensure that these variables "api_url : http://localhost:", and "api_port: 8080" are setup on POSTMAN
 -  before making requests, or you can reach out to me for assistance 
+
+### Swagger API documentation link
+- http://localhost:8080/api/v1/swagger-ui/index.html#/
