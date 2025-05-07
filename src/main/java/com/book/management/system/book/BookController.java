@@ -41,4 +41,11 @@ public class BookController {
         return service.deleteBook(bookId);
     }
 
+    @GetMapping("/search/{search-phrase}")
+    public ResponseEntity<PageResponse<BookResponse>> searchAllBooksByTitleOrAuthor(
+            @PathVariable ("search-phrase") String searchPhrase
+    ) {
+        return ResponseEntity.ok(service.searchAllBooksByTitleOrAuthor(searchPhrase));
+    }
+
 }

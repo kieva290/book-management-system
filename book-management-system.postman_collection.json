@@ -152,6 +152,27 @@
 				}
 			},
 			"response": []
+		},
+		{
+			"name": "Search Books",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{api_url}}{{api_port}}/api/v1/books/search/soweto",
+					"host": [
+						"{{api_url}}{{api_port}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"books",
+						"search",
+						"soweto"
+					]
+				}
+			},
+			"response": []
 		}
 	]
 }

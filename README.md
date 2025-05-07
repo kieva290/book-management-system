@@ -83,7 +83,7 @@ This application comes with unit tests, for the Services classes
 - **Description**: Retrieves Book, for the supplied book-id.
 - **Response**: Returns Response Object, if book exists.
 
-- **Update Book**: `/api/v1/books/{book-id}`
+- **Get Book**: `/api/v1/books/{book-id}`
     - Method: `GET`
     - Description: Update book end-point.
     - Response:
@@ -105,12 +105,27 @@ This application comes with unit tests, for the Services classes
 - **Description**: Deletes Book, for the supplied book-id.
 - **Response**: Returns 204 Response, for successful delete.
 
-- **Update Book**: `/api/v1/books/{book-id}`
+- **Delete Book**: `/api/v1/books/{book-id}`
     - Method: `DELETE`
     - Description: Delete book end-point.
     - Response:
         - HTTP Status Code:
             - `204 No Content` - Nothing is returned.
+
+
+#### Search for Books for the supplied search-phrase
+
+- **Method**: `GET`
+- **URL**: `/api/v1/books/search/{search-phrase}`
+- **Description**: Retrieves Books, for the supplied search-phrase.
+- **Response**: Returns List of Books, if books exists.
+
+- **Retrieve Books**: `/api/v1/books/search/{search-phrase}`
+    - Method: `GET`
+    - Description: Update book end-point.
+    - Response:
+        - HTTP Status Code:
+            - `200 OK` - Response List of Books.
 
 ### Notes
 
