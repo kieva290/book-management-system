@@ -20,8 +20,11 @@ public class Book {
     @Id
     @GeneratedValue
     private Integer id;
+    @Column(nullable = false)
     private String title;
+    @Column(nullable = false)
     private String author;
+    @Column(nullable = false)
     private String isbn;
 
     @CreatedDate
