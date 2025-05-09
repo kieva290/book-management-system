@@ -21,7 +21,7 @@ follow this link to install Docker Desktop [official Docker documentation](https
 To launch the application, navigate to the root directory of the project and run the following command
 
 ```bash
-docker-compose up --build -d
+docker compose up --build -d
 ```
 
 This command builds and starts the application within a Docker container, the application will be accessible on port 8080
@@ -29,7 +29,7 @@ This command builds and starts the application within a Docker container, the ap
 To bring own the application and associated containers, use the following command:
 
 ```bash
-docker-compose down --rmi all
+docker compose down --rmi all
 ```
 The `--rmi all` flag removes all associated images, if you wish to retain the images for future use, simply omit this flag from the command
 
