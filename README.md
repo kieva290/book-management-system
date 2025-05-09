@@ -72,7 +72,8 @@ This application comes with unit tests, for the Services classes
       {
         "id": 3,
         "title": "Theory of Algorithms",
-        "author": "Kev"
+        "author": "Kev",
+        "isbn": "9609555752425"
       }
       ```
 
@@ -89,12 +90,13 @@ This application comes with unit tests, for the Services classes
     - Response:
         - HTTP Status Code:
             - `200 OK` - Response object of updated Book details.
-    - Sample Request:
+    - Sample Response:
       ```json
       {
         "id": 3,
         "title": "Theory of Algorithms",
-        "author": "Kev"
+        "author": "Kev",
+        "isbn": "9609555752425"
       }
       ```
 
