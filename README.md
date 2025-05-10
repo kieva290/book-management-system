@@ -8,7 +8,7 @@ This application is built using Spring Boot and MySQL, serving a solid foundatio
 
 its crucial to first build the target JAR file "book-management-system-0.0.1-SNAPSHOT.jar", which is gets stored inside the target folder 
 
-from the root folder for the project this command "mvn clean build", will build the application and create JAR file first
+from the root folder for the project this command "mvn clean install", will build the application and create JAR file first
 
 ### Dockerized Environment
 
