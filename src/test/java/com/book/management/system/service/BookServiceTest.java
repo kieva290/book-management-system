@@ -2,6 +2,8 @@ package com.book.management.system.service;
 
 import com.book.management.system.book.*;
 import com.book.management.system.common.ISBNGenerator;
+import com.book.management.system.common.IdempotencyKey;
+import com.book.management.system.common.IdempotencyKeyRepository;
 import com.book.management.system.common.PageResponse;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -15,6 +17,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertAll;
@@ -26,6 +29,9 @@ public class BookServiceTest {
 
     @Mock
     private BookRepository bookRepository;
+
+    @Mock
+    private IdempotencyKeyRepository idempotencyKeyRepository;
 
     @InjectMocks
     private BookService bookService;
@@ -41,6 +47,11 @@ public class BookServiceTest {
         // GIVEN
         BookRequest bookRequest = new BookRequest(null, "test title", "test author");
 
+        IdempotencyKey idempotencyKey = new IdempotencyKey();
+        idempotencyKey.setPotencyKey("potencyKey");
+        idempotencyKey.setResponse("test potency");
+        idempotencyKey.setExpiryDate(LocalDateTime.now());
+
         Book book = Book.builder()
                 .id(1)
                 .author("test author")
@@ -51,12 +62,13 @@ public class BookServiceTest {
         // Mock the calls
         when(isbnGenerator.generateISBN13()).thenReturn("9780306406157");
         when(bookMapper.toBook(bookRequest)).thenReturn(book);
+        when(idempotencyKeyRepository.findByPotencyKey("potencyKey")).thenReturn(Optional.of(idempotencyKey));
         when(bookRepository.save(book)).thenReturn(book);
 
         // When
-        Integer bookId = bookService.save(bookRequest);
+        String response = bookService.save("potencyKey", bookRequest);
 
-        assertNotNull(bookId);
+        assertNotNull(response);
         verify(isbnGenerator, times (1)).generateISBN13();
         verify(bookMapper, times (1)).toBook(bookRequest);
         verify(bookRepository, times(1)).save(book);

@@ -21,10 +21,16 @@
 					]
 				},
 				"method": "POST",
-				"header": [],
+				"header": [
+					{
+						"key": "idempotency-key",
+						"value": "testIdempotency4",
+						"type": "text"
+					}
+				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"title\": \"soweto rose 28928\",\n    \"author\": \"soweto 28928\"\n}",
+					"raw": "{\n    \"title\": \"Idempotency Book 4\",\n    \"author\": \"Idempotency Book 4\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"

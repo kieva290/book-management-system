@@ -41,6 +41,7 @@ This application comes with unit tests, for the Services classes
 
 - **Create Book**: `/api/v1/books`
     - Method: `POST`
+    - Header: "idempotency-key"
     - Description: Create new book end-point.
     - Response:
         - HTTP Status Code:

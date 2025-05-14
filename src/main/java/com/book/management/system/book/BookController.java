@@ -14,8 +14,8 @@ public class BookController {
     private final BookService service;
 
     @PostMapping
-    public ResponseEntity<Integer> saveBook(@Valid @RequestBody BookRequest request) {
-        return ResponseEntity.ok(service.save(request));
+    public ResponseEntity<String> saveBook(@RequestHeader("idempotency-key") String idempotencyKey, @Valid @RequestBody BookRequest request) {
+        return ResponseEntity.ok(service.save(idempotencyKey, request));
     }
 
     @GetMapping

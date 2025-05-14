@@ -2,6 +2,8 @@ package com.book.management.system.book;
 
 import com.book.management.system.book.dao.BookSearchDao;
 import com.book.management.system.common.ISBNGenerator;
+import com.book.management.system.common.IdempotencyKey;
+import com.book.management.system.common.IdempotencyKeyRepository;
 import com.book.management.system.common.PageResponse;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
@@ -12,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -21,14 +24,34 @@ import java.util.List;
 public class BookService {
 
     private final BookRepository bookRepository;
+    private final IdempotencyKeyRepository idempotencyKeyRepository;
     private final BookMapper bookMapper;
     private final ISBNGenerator isbnGenerator;
     private final BookSearchDao bookSearchDao;
 
-    public Integer save(@Valid BookRequest request) {
+    public String save(String idempotencyKey, @Valid BookRequest request) {
+        IdempotencyKey savedKey = idempotencyKeyRepository.findByPotencyKey(idempotencyKey).orElse(null);
+
+        if (savedKey != null) {
+            if (savedKey.getExpiryDate().isBefore(LocalDateTime.now())) {
+                idempotencyKeyRepository.delete(savedKey);
+            } else {
+                return "Book already saved " + savedKey.getResponse();
+            }
+        }
+
         Book book = bookMapper.toBook(request);
         book.setIsbn(isbnGenerator.generateISBN13());
-        return bookRepository.save(book).getId();
+        bookRepository.save(book);
+
+        IdempotencyKey newKey = new IdempotencyKey();
+        newKey.setPotencyKey(idempotencyKey);
+        newKey.setResponse("Book saved with ID: " + book.getId());
+        newKey.setExpiryDate(LocalDateTime.now());
+        idempotencyKeyRepository.save(newKey);
+
+        return "Book saved with ID: " + book.getId();
+
     }
 
     public PageResponse<BookResponse> findAllBooks(int page, int size) {
